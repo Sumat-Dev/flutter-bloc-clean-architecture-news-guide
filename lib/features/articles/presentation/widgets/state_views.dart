@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/articles_bloc.dart';
 import 'article_tile.dart';
+import '../../domain/entities/article.dart';
 
 class StateViews {
   static Widget buildView(BuildContext context, ArticlesState state) {
-    switch (state.runtimeType) {
-      case ArticlesInitial _:
+    switch (state) {
+      case ArticlesInitial():
         return const _InitialView();
-      case ArticlesLoading _:
+      case ArticlesLoading():
         return const _LoadingView();
-      case ArticlesLoaded _:
-        return _LoadedView(articles: (state as ArticlesLoaded).articles);
-      case ArticlesError _:
-        return _ErrorView(message: (state as ArticlesError).message);
+      case ArticlesLoaded():
+        return _LoadedView(articles: state.articles);
+      case ArticlesError():
+        return _ErrorView(message: state.message);
       default:
         return const _InitialView();
     }
@@ -25,20 +26,28 @@ class _InitialView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.article_outlined, size: 64, color: Colors.grey),
-          SizedBox(height: 16),
-          Text(
+          const Icon(Icons.article_outlined, size: 64, color: Colors.grey),
+          const SizedBox(height: 16),
+          const Text(
             'Welcome to News App',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             'Pull to refresh to load the latest news',
             style: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+          const SizedBox(height: 24),
+          ElevatedButton.icon(
+            onPressed: () {
+              context.read<ArticlesBloc>().add(const LoadTopHeadlines());
+            },
+            icon: const Icon(Icons.download),
+            label: const Text('Load Articles Now'),
           ),
         ],
       ),
@@ -68,7 +77,7 @@ class _LoadingView extends StatelessWidget {
 }
 
 class _LoadedView extends StatelessWidget {
-  final List<dynamic> articles;
+  final List<Article> articles;
 
   const _LoadedView({required this.articles});
 

@@ -25,12 +25,14 @@ class _ArticlesPageState extends State<ArticlesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('News App'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
               context.read<ArticlesBloc>().add(const RefreshTopHeadlines());
             },
+            tooltip: 'Refresh',
           ),
         ],
       ),

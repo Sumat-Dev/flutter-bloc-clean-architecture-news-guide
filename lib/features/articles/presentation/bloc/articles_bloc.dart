@@ -18,7 +18,6 @@ class ArticlesBloc extends Bloc<ArticlesEvent, ArticlesState> {
     LoadTopHeadlines event,
     Emitter<ArticlesState> emit,
   ) async {
-    // print('🔄 ArticlesBloc: Loading top headlines...');
     emit(ArticlesLoading());
 
     try {
@@ -33,16 +32,13 @@ class ArticlesBloc extends Bloc<ArticlesEvent, ArticlesState> {
 
       result.fold(
         (failure) {
-          // print('❌ ArticlesBloc: Error loading headlines - ${failure.message}');
           emit(ArticlesError(failure.message));
         },
         (articles) {
-          // print('✅ ArticlesBloc: Successfully loaded ${articles.length} articles');
           emit(ArticlesLoaded(articles));
         },
       );
     } catch (e) {
-      // print('💥 ArticlesBloc: Exception occurred - $e');
       emit(ArticlesError('Unexpected error: $e'));
     }
   }
@@ -51,7 +47,6 @@ class ArticlesBloc extends Bloc<ArticlesEvent, ArticlesState> {
     RefreshTopHeadlines event,
     Emitter<ArticlesState> emit,
   ) async {
-    // print('🔄 ArticlesBloc: Refreshing top headlines...');
     emit(ArticlesLoading());
 
     try {
@@ -66,16 +61,13 @@ class ArticlesBloc extends Bloc<ArticlesEvent, ArticlesState> {
 
       result.fold(
         (failure) {
-          // print('❌ ArticlesBloc: Error refreshing headlines - ${failure.message}');
           emit(ArticlesError(failure.message));
         },
         (articles) {
-          // print('✅ ArticlesBloc: Successfully refreshed ${articles.length} articles');
           emit(ArticlesLoaded(articles));
         },
       );
     } catch (e) {
-      // print('💥 ArticlesBloc: Exception occurred during refresh - $e');
       emit(ArticlesError('Unexpected error: $e'));
     }
   }
